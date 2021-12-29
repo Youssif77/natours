@@ -5,6 +5,13 @@ const handleCastErrorDB = err => {
   return new AppError(message, 400);
 };
 
+const handleValidatorErrorDB = err => {
+  const errors = Object.values(err.errors).map(el => el.message);
+
+  const message = `Invaild input data. ${errors.join('. ')}`;
+  return new AppError(message, 400);
+};
+
 const handleDuplicateFieldsDB = err => {
   const field = JSON.stringify(Object.keys(err.keyValue).join(' '));
   const value = JSON.stringify(Object.values(err.keyValue).join(' '));
@@ -53,6 +60,7 @@ module.exports = (err, req, res, next) => {
     let error = Object.create(err);
 
     if (err.name === 'CastError') error = handleCastErrorDB(err);
+    if (err.name === 'ValidationError') error = handleValidatorErrorDB(err);
     if (err.code === 11000) error = handleDuplicateFieldsDB(err);
 
     sendErrorProd(error, res);
