@@ -26,4 +26,16 @@ const reviewShcema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+reviewShcema.pre(/^find/, function populateTourAndUser(next) {
+  this.populate({
+    path: 'tour',
+    select: 'name'
+  }).populate({
+    path: 'user',
+    select: 'name photo'
+  });
+
+  next();
+});
+
 module.exports = mongoose.model('Review', reviewShcema);
