@@ -97,6 +97,13 @@ tourSchema.virtual('durationWeeks').get(function transformDaysToWeeks() {
   return this.duration / 7;
 });
 
+// Virtual populate
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
+});
+
 // Document middleware: runs before .save() and .create() NOT .insertMany
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });

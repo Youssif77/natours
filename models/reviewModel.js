@@ -27,10 +27,15 @@ const reviewShcema = new mongoose.Schema(
 );
 
 reviewShcema.pre(/^find/, function populateTourAndUser(next) {
+  // this.populate({
+  //   path: 'tour',
+  //   select: 'name'
+  // }).populate({
+  //   path: 'user',
+  //   select: 'name photo'
+  // });
+
   this.populate({
-    path: 'tour',
-    select: 'name'
-  }).populate({
     path: 'user',
     select: 'name photo'
   });
