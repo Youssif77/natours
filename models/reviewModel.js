@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Tour = require('./tourModel');
 
 const reviewShcema = new mongoose.Schema(
   {
@@ -6,7 +7,7 @@ const reviewShcema = new mongoose.Schema(
       type: String,
       required: [true, 'Review can not be empty!']
     },
-    ratting: {
+    rating: {
       type: Number,
       min: [1, 'Review must be above 1.0'],
       max: [5, 'Review must be below 5.0']
@@ -26,15 +27,50 @@ const reviewShcema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-reviewShcema.pre(/^find/, function populateTourAndUser(next) {
-  // this.populate({
-  //   path: 'tour',
-  //   select: 'name'
-  // }).populate({
-  //   path: 'user',
-  //   select: 'name photo'
-  // });
+reviewShcema.statics.calcAverageRatings = async function calcAverageRatings(
+  tourId
+) {
+  const stats = await this.aggregate([
+    { $match: { tour: tourId } },
+    {
+      $group: {
+        _id: '$tour',
+        nRating: { $sum: 1 },
+        avgRating: { $avg: '$rating' }
+      }
+    }
+  ]);
 
+  if (stats.length > 0) {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsAverage: stats[0].avgRating,
+      ratingsQuantity: stats[0].nRating
+    });
+  } else {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsAverage: 4.5,
+      ratingsQuantity: 0
+    });
+  }
+};
+
+reviewShcema.post('save', function addReviewRatingOnTour() {
+  // this points to current review
+  this.constructor.calcAverageRatings(this.tour);
+});
+
+reviewShcema.pre(/^findOneAnd/, async function hookReviewToQuery(next) {
+  this.review = await this.findOne();
+  // console.log(this.review);
+
+  next();
+});
+
+reviewShcema.post(/^findOneAnd/, async function populateTourAndUser() {
+  await this.review.constructor.calcAverageRatings(this.review.tour);
+});
+
+reviewShcema.pre(/^find/, function populateTourAndUser(next) {
   this.populate({
     path: 'user',
     select: 'name photo'
