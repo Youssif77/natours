@@ -27,6 +27,8 @@ const reviewShcema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+reviewShcema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewShcema.statics.calcAverageRatings = async function calcAverageRatings(
   tourId
 ) {
