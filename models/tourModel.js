@@ -104,6 +104,9 @@ tourSchema.virtual('reviews', {
   localField: '_id'
 });
 
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+
 // Document middleware: runs before .save() and .create() NOT .insertMany
 tourSchema.pre('save', function(next) {
   this.slug = slugify(this.name, { lower: true });
