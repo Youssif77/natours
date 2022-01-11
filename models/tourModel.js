@@ -107,6 +107,7 @@ tourSchema.virtual('reviews', {
 
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
 
 // Document middleware: runs before .save() and .create() NOT .insertMany
 tourSchema.pre('save', function(next) {
@@ -140,8 +141,11 @@ tourSchema.post(/^find/, function(docs, next) {
   next();
 });
 
+// Aggregate middleware
 tourSchema.pre('aggregate', function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  // To skip unshift thus geoNear be the first stage alawys
+  if (!this.pipeline()[0].$geoNear)
+    this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 });
 
