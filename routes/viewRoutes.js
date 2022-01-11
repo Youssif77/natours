@@ -5,10 +5,6 @@ const router = express.Router();
 
 router.get('/', viewsController.getOverview);
 
-router.get('/tour', (req, res) => {
-  res.status(200).render('tour', {
-    title: 'The Forest Hiker'
-  });
-});
+router.get('/tour', viewsController.getTour);
 
 module.exports = router;
