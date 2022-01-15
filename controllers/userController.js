@@ -1,3 +1,4 @@
+const { unlink } = require('fs');
 const multer = require('multer');
 const sharp = require('sharp');
 
@@ -44,6 +45,16 @@ exports.resizeUserPhoto = (req, res, next) => {
   next();
 };
 
+function deletePhotoFromServer(photo) {
+  if (photo.startsWith('default')) return;
+  console.log(photo);
+  const path = `${__dirname}/../public/img/users/${photo}`;
+  unlink(path, err => {
+    if (err) return console.log(err);
+  });
+  console.log('Previous photo has been deleted', path);
+}
+
 function filterObj(obj, ...allowedFileds) {
   const newObj = {};
   Object.keys(obj).forEach(el => {
@@ -72,7 +83,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   const filteredBody = filterObj(req.body, 'name', 'email');
   if (req.file) filteredBody.photo = req.file.filename;
 
-  // 3) Update user document
+  // 3) If uploading new photo, delete the old one from the server.
+  if (req.file) await deletePhotoFromServer(req.user.photo);
+
+  // 4) Update user document
   const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true
