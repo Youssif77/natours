@@ -35,15 +35,20 @@ if (logoutBtn) {
 }
 
 if (userDataForm) {
-  userDataForm.addEventListener('submit', function getFormData(e) {
+  userDataForm.addEventListener('submit', async function getFormData(e) {
     e.preventDefault();
+    document.querySelector('.btn--save-settings').innerHTML = 'Updating...';
 
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
 
-    updateSettings(form, 'data');
+    await updateSettings(form, 'data');
+
+    document.querySelector('.btn--save-settings').textContent = 'Save settings';
+
+    location.reload();
   });
 }
 
