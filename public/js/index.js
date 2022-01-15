@@ -3,11 +3,14 @@ console.log('Hallo from parcel');
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
 import { login, logout } from './login';
+import { updateSettings } from './updateSettings';
 
 // DOM elements
 const mapBox = document.getElementById('map');
-const loginForm = document.querySelector('form');
+const loginForm = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
+const userDataForm = document.querySelector('.form-user-data');
+const userPasswordForm = document.querySelector('.form-user-password');
 
 // Delegations
 if (mapBox) {
@@ -19,6 +22,7 @@ if (loginForm) {
   loginForm.addEventListener('submit', function getFormData(e) {
     e.preventDefault();
 
+    console.log(loginForm);
     // Read the form inputs value
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -28,4 +32,37 @@ if (loginForm) {
 
 if (logoutBtn) {
   logoutBtn.addEventListener('click', logout);
+}
+
+if (userDataForm) {
+  userDataForm.addEventListener('submit', function getFormData(e) {
+    e.preventDefault();
+
+    // Read the form inputs value
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    updateSettings({ name, email }, 'data');
+  });
+}
+
+if (userPasswordForm) {
+  userPasswordForm.addEventListener('submit', async function getFormData(e) {
+    e.preventDefault();
+
+    // Read the form inputs value
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    document.querySelector('.btn--save-password').innerHTML = 'Updating...';
+
+    await updateSettings(
+      { passwordCurrent, password, passwordConfirm },
+      'password'
+    );
+
+    document.getElementById('password-current').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('password-confirm').value = '';
+    document.querySelector('.btn--save-password').innerHTML = 'Save password';
+  });
 }

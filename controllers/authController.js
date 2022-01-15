@@ -98,6 +98,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // Grant access to protected route
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
@@ -221,7 +222,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password');
 
   // 2) Check if posted current password is correct
-  if (!(await user.correctPassword(req.body.currentPassword, user.password)))
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password)))
     return next(new AppError('Your current password is worng', 401));
 
   // 3) If so, update password
