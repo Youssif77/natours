@@ -6,8 +6,8 @@
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
-    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/dist --out-file bundle.js public--url /dist",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/dist --out-file bundle.js public--url /dist",
+    "watch:js": "parcel watch  ./public/js/index.js --out-dir ./public/dist --out-file bundle.js --public-url /dist",
+    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/dist --out-file bundle.js --public-url /dist",
     "debug": "ndb server.js"
   },
   "keywords": [],
@@ -34,6 +34,7 @@
     "pug": "^3.0.2",
     "sharp": "^0.29.3",
     "slugify": "^1.6.4",
+    "stripe": "^8.197.0",
     "validator": "^13.7.0",
     "xss-clean": "^0.1.1"
   },
