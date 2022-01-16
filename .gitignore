@@ -16,6 +16,7 @@ nodemon.json
 /build
 /public/dist
 /.cache
+/dev-data
 
 # misc
 .DS_Store
