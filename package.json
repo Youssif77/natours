@@ -7,7 +7,7 @@
     "start:dev": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production&&nodemon server.js",
     "watch:js": "parcel watch  ./public/js/index.js --out-dir ./public/dist --out-file bundle.js --public-url /dist",
-    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/dist --out-file bundle.js --public-url /dist",
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/dist --out-file bundle.js --public-url /dist",
     "debug": "ndb server.js"
   },
   "keywords": [],
