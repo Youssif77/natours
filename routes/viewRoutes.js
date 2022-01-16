@@ -5,6 +5,8 @@ const bookingController = require('./../controllers/bookingController');
 
 const router = express.Router();
 
+router.get('/signup', viewsController.getSignupForm);
+
 router.get('/me', authController.protect, viewsController.getAccount);
 router.post(
   '/submit-user-data',
