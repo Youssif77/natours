@@ -1,5 +1,4 @@
 /* eslint-disable */
-console.log('Hallo from parcel');
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
 import { signup, login, logout } from './auth';

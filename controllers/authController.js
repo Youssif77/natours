@@ -42,7 +42,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   });
 
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  // console.log(url);
   await new Email(newUser, url).snedWelcome();
 
   createAndSendToken(newUser, 201, res);
@@ -125,9 +125,8 @@ exports.isLoggedIn = async (req, res, next) => {
 
     // There is a looged in user
     res.locals.user = currentUser;
+    next();
   } catch (err) {
-    console.log(err);
-  } finally {
     next();
   }
 };

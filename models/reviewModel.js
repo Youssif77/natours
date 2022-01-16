@@ -63,7 +63,6 @@ reviewShcema.post('save', function addReviewRatingOnTour() {
 
 reviewShcema.pre(/^findOneAnd/, async function hookReviewToQuery(next) {
   this.review = await this.findOne();
-  // console.log(this.review);
 
   next();
 });

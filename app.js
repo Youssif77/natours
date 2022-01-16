@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 
@@ -72,6 +73,8 @@ app.use(
 
 // use cors before all route definitions
 app.use(cors({ origin: 'http://localhost:3000' }));
+
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
