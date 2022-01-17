@@ -74,7 +74,8 @@ app.use(
 );
 
 // use cors before all route definitions
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors());
+app.options('*', cors());
 
 app.use(compression());
 
