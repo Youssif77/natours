@@ -1,9 +1,10 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { displayMap } from './mapbox';
+import { bookTour } from './stripe';
 import { signup, login, logout } from './auth';
 import { updateSettings } from './updateSettings';
-import { bookTour } from './stripe';
+import { showAlert } from './alerts';
 
 // DOM elements
 const mapBox = document.getElementById('map');
@@ -95,3 +96,7 @@ if (bookBtn) {
     bookTour(tourId);
   });
 }
+
+const alertMessage = document.body.dataset.alert;
+
+if (alertMessage) alertMessage('success', alertMessage, 10);
