@@ -10,7 +10,7 @@ https://natours-yhf.herokuapp.com
 
 **Server:** Node, Express , MongoDB, Mongoose, Pug
 
-**Intgrations:** Stripe , SnedGrid
+**Intgrations:** Stripe , SnedGrid , Mapbox
 
 ## Run Locally
 
