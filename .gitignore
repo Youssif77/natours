@@ -14,7 +14,7 @@ nodemon.json
 
 # production
 /build
-/public/dist
+# /public/dist
 /.cache
 /dev-data
 
