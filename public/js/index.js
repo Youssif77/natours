@@ -99,4 +99,4 @@ if (bookBtn) {
 
 const alertMessage = document.body.dataset.alert;
 
-if (alertMessage) alertMessage('success', alertMessage, 10);
+if (alertMessage) showAlert('success', alertMessage, 10);
